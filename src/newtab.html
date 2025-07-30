@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>诗词新标签页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <div id="container">
+    <button id="historyToggle" class="history-toggle" title="历史记录">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12,6 12,12 16,14"></polyline>
+      </svg>
+    </button>
+    <div id="historyPanel" class="history-panel hidden">
+      <div class="history-header">
+        <span>最近诗词</span>
+        <button id="clearHistory" class="clear-history">清空</button>
+      </div>
+      <div id="historyList" class="history-list">
+        <div class="history-empty">暂无历史记录</div>
+      </div>
+    </div>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <div class="loading-text">诗词加载中...</div>
+    </div>
+    <div id="content" class="content hidden">
+      <div id="poem" class="poem"></div>
+      <div id="from" class="author"></div>
+    </div>
+    <div id="error" class="error hidden">
+      <div class="error-icon">😔</div>
+      <div class="error-text">诗词获取失败</div>
+      <button id="retry" class="retry-btn">重试</button>
+    </div>
+  </div>
+  
+  <!-- 固定在左下角的按钮 -->
+  <button id="refresh" class="refresh-btn" title="换一首">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="23 4 23 10 17 10"></polyline>
+      <polyline points="1 20 1 14 7 14"></polyline>
+      <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+    </svg>
+  </button>
+  
+  <script src="newtab.js"></script>
+</body>
+</html>
