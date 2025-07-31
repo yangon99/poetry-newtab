@@ -23,7 +23,7 @@
   "license": "MIT",
   "extensionConfig": {
     "displayName": "诗词新标签页",
-    "firefoxId": "poetry-newtab@yangon99.com",
+    "firefoxId": "poetry-newtab@example.com",
     "minFirefoxVersion": "109.0"
   },
   "devDependencies": {
