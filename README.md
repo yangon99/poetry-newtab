@@ -69,7 +69,12 @@ SDK会自动处理所有底层逻辑，包括Token获取、缓存管理、错误
 - 可修改历史记录保存数量（默认10条）
 
 ## License
-MIT
+
+### 软件许可
+本项目代码遵循 MIT License。详见 [LICENSE](./LICENSE) 文件。
+
+### 字体许可
+本项目使用的朱雀仿宋字体遵循 SIL Open Font License 1.1 (OFL-1.1)。详细信息请参阅 [FONT-LICENSE.md](./FONT-LICENSE.md)。
 
 ## 更新日志
 ### v1.3.0 (最新)

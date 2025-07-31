@@ -19,7 +19,7 @@
     "poetry",
     "newtab"
   ],
-  "author": "Your Name",
+  "author": "yangon99",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.22.0",

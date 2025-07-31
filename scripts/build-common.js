@@ -43,6 +43,16 @@ function buildChrome() {
   // 复制 dist 文件到 build/chrome
   copyDirectory(path.join(__dirname, '../dist'), buildDir);
   
+  // 复制许可证文件
+  fs.copyFileSync(
+    path.join(__dirname, '../LICENSE'),
+    path.join(buildDir, 'LICENSE')
+  );
+  fs.copyFileSync(
+    path.join(__dirname, '../FONT-LICENSE.md'),
+    path.join(buildDir, 'FONT-LICENSE.md')
+  );
+  
   // 创建 ZIP 包
   createZip(buildDir, path.join(__dirname, '../build/poetry-newtab-chrome.zip'));
   
@@ -93,6 +103,16 @@ function buildFirefox() {
   
   // 复制 dist 文件到 build/firefox
   copyDirectory(path.join(__dirname, '../dist'), buildDir);
+  
+  // 复制许可证文件
+  fs.copyFileSync(
+    path.join(__dirname, '../LICENSE'),
+    path.join(buildDir, 'LICENSE')
+  );
+  fs.copyFileSync(
+    path.join(__dirname, '../FONT-LICENSE.md'),
+    path.join(buildDir, 'FONT-LICENSE.md')
+  );
   
   // 创建 ZIP 包
   createZip(buildDir, path.join(__dirname, '../build/poetry-newtab-firefox.zip'));
