@@ -2,15 +2,18 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 
+// 读取 package.json
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
+
 // Chrome 插件构建
 function buildChrome() {
   console.log('🔥 构建 Chrome 插件...');
   
   const manifestChrome = {
     "manifest_version": 3,
-    "name": "诗词新标签页",
-    "version": "1.0.0",
-    "description": "替换新标签页，展示一句诗词（jinrishici.com）",
+    "name": packageJson.extensionConfig.displayName,
+    "version": packageJson.version,
+    "description": packageJson.description,
     "chrome_url_overrides": {
       "newtab": "newtab.html"
     },
@@ -65,9 +68,9 @@ function buildFirefox() {
   
   const manifestFirefox = {
     "manifest_version": 2,
-    "name": "诗词新标签页",
-    "version": "1.0.0",
-    "description": "替换新标签页，展示一句诗词（jinrishici.com）",
+    "name": packageJson.extensionConfig.displayName,
+    "version": packageJson.version,
+    "description": packageJson.description,
     "chrome_url_overrides": {
       "newtab": "newtab.html"
     },
@@ -83,8 +86,8 @@ function buildFirefox() {
     "content_security_policy": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self';",
     "browser_specific_settings": {
       "gecko": {
-        "id": "poetry-newtab@example.com",
-        "strict_min_version": "109.0"
+        "id": packageJson.extensionConfig.firefoxId,
+        "strict_min_version": packageJson.extensionConfig.minFirefoxVersion
       }
     }
   };

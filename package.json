@@ -21,6 +21,11 @@
   ],
   "author": "yangon99",
   "license": "MIT",
+  "extensionConfig": {
+    "displayName": "诗词新标签页",
+    "firefoxId": "poetry-newtab@yangon99.com",
+    "minFirefoxVersion": "109.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.0",
     "@babel/preset-env": "^7.22.0",
