@@ -1,6 +1,6 @@
 {
   "name": "poetry-newtab-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "浏览器插件：替换新标签页，展示一句诗词",
   "main": "newtab.js",
   "scripts": {
