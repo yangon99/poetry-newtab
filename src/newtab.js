@@ -221,30 +221,42 @@ class PoemApp {
   }
   
   renderHistory() {
+    // 清空历史记录列表
+    this.historyList.innerHTML = '';
+    
     if (this.history.length === 0) {
       this.historyList.innerHTML = '<div class="history-empty">暂无历史记录</div>';
       return;
     }
     
-    const historyHTML = this.history.map(item => `
-      <div class="history-item" data-content="${item.content}">
-        <div class="history-poem">${item.content}</div>
-        <div class="history-author">—— ${item.author}《${item.title}》</div>
-      </div>
-    `).join('');
-    
-    this.historyList.innerHTML = historyHTML;
-    
-    // 为历史记录项添加点击事件
-    this.historyList.querySelectorAll('.history-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const content = item.dataset.content;
-        const historyData = this.history.find(h => h.content === content);
+    // 安全地创建历史记录项
+    this.history.forEach(item => {
+      const historyItem = document.createElement('div');
+      historyItem.className = 'history-item';
+      // 直接在元素上存储数据引用，而不是使用 data 属性
+      historyItem._historyData = item;
+      
+      const poemDiv = document.createElement('div');
+      poemDiv.className = 'history-poem';
+      poemDiv.textContent = item.content;
+      
+      const authorDiv = document.createElement('div');
+      authorDiv.className = 'history-author';
+      authorDiv.textContent = `—— ${item.author}《${item.title}》`;
+      
+      historyItem.appendChild(poemDiv);
+      historyItem.appendChild(authorDiv);
+      
+      // 添加点击事件
+      historyItem.addEventListener('click', () => {
+        const historyData = historyItem._historyData;
         if (historyData) {
           this.displayHistoryPoem(historyData);
           this.hideHistory();
         }
       });
+      
+      this.historyList.appendChild(historyItem);
     });
   }
   
