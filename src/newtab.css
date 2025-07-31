@@ -90,9 +90,39 @@ body {
   font-weight: 400;
   margin-bottom: 2rem;
   opacity: 0.8;
+  transition: all 0.3s ease;
 }
 
-.refresh-btn {
+/* 作者信息对齐样式 */
+.author.align-left {
+  text-align: left;
+}
+
+.author.align-center {
+  text-align: center;
+}
+
+.author.align-right {
+  text-align: right;
+}
+
+.author.hidden {
+  display: none;
+}
+
+/* 左下角按钮容器 */
+.bottom-actions {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 50;
+}
+
+/* 统一的按钮样式 */
+.action-btn {
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -105,25 +135,32 @@ body {
   justify-content: center;
   width: 32px;
   height: 32px;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
 }
 
-.refresh-btn:hover {
+.action-btn:hover {
   background: rgba(0, 0, 0, 0.05);
   color: #888;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+/* 特定按钮的特殊动画 */
+.action-btn[title="换一首"]:hover {
   transform: rotate(180deg);
 }
 
-.refresh-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #888;
-  transform: rotate(180deg);
-}
-
-.refresh-btn:active {
+.action-btn[title="换一首"]:active {
   transform: rotate(180deg) scale(0.95);
+}
+
+.action-btn[title="设置"]:hover {
+  transform: rotate(90deg);
+}
+
+.action-btn[title="设置"]:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 /* 错误状态 */
@@ -206,34 +243,10 @@ body {
 
 /* 移除背景装饰 */
 
-/* 历史记录样式 */
-.history-toggle {
-  position: fixed;
-  bottom: 20px;
-  left: 60px;
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  padding: 8px;
-  cursor: pointer;
-  font-size: 0;
-  color: #bbb;
-  transition: all 0.3s ease;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.history-toggle:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: #888;
-}
-
+/* 历史记录面板样式 */
 .history-panel {
   position: fixed;
-  bottom: 60px;
+  bottom: 70px; /* 调整位置适应新的按钮容器 */
   left: 20px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -306,4 +319,101 @@ body {
   text-align: center;
   color: #7f8c8d;
   font-size: 0.9rem;
+}
+
+/* 设置面板 */
+.settings-panel {
+  position: fixed;
+  bottom: 70px; /* 调整位置适应新的按钮容器 */
+  left: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.settings-content {
+  padding: 16px 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  font-size: 0.9rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.setting-select {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  color: #2c3e50;
+  min-width: 120px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.setting-select:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.setting-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* 响应式设计 - 设置面板 */
+@media (max-width: 768px) {
+  .settings-panel {
+    left: 10px;
+    right: 10px;
+    min-width: auto;
+    max-width: calc(100vw - 20px);
+  }
+  
+  .bottom-actions {
+    left: 10px;
+    gap: 6px;
+  }
+  
+  .action-btn {
+    width: 28px;
+    height: 28px;
+    padding: 6px;
+  }
 }

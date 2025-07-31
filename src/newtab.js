@@ -14,9 +14,14 @@ class PoemApp {
     this.historyPanel = document.getElementById('historyPanel');
     this.historyList = document.getElementById('historyList');
     this.clearHistoryBtn = document.getElementById('clearHistory');
+    this.settingsToggle = document.getElementById('settingsToggle');
+    this.settingsPanel = document.getElementById('settingsPanel');
+    this.typewriterModeSelect = document.getElementById('typewriterMode');
+    this.authorAlignSelect = document.getElementById('authorAlign');
     
     this.history = this.loadHistory();
     this.maxHistoryItems = 10;
+    this.settings = this.loadSettings();
     
     this.init();
   }
@@ -24,6 +29,7 @@ class PoemApp {
   init() {
     this.bindEvents();
     this.renderHistory();
+    this.initSettings();
     this.fetchPoem();
   }
   
@@ -53,7 +59,25 @@ class PoemApp {
   
   displayPoem(data) {
     const { content, origin } = data;
+    const authorInfo = `—— ${origin.author}《${origin.title}》`;
     
+    // 决定是否使用打字机效果（新诗词可以使用 always 或 newOnly 模式）
+    const shouldUseTypewriter = this.settings.typewriterMode === 'always' || 
+                               this.settings.typewriterMode === 'newOnly';
+    
+    this.displayContent(content, authorInfo, shouldUseTypewriter);
+  }
+
+  displayHistoryPoem(data) {
+    const authorInfo = `—— ${data.author}《${data.title}》`;
+    
+    // 历史诗词只在 always 模式下使用打字机效果
+    const shouldUseTypewriter = this.settings.typewriterMode === 'always';
+    
+    this.displayContent(data.content, authorInfo, shouldUseTypewriter);
+  }
+
+  displayContent(content, authorInfo, useTypewriter) {
     this.hideLoading();
     this.hideError();
     
@@ -61,12 +85,20 @@ class PoemApp {
     this.poemEl.innerHTML = '';
     this.fromEl.innerHTML = '';
     
-    // 使用打字机效果显示诗词
-    this.typewriterEffect(this.poemEl, content, () => {
-      // 诗词显示完成后显示作者信息
-      const authorInfo = `—— ${origin.author}《${origin.title}》`;
-      this.typewriterEffect(this.fromEl, authorInfo);
-    });
+    // 应用作者信息样式
+    this.applyAuthorStyle();
+    
+    if (useTypewriter) {
+      // 使用打字机效果显示诗词
+      this.typewriterEffect(this.poemEl, content, () => {
+        // 诗词显示完成后显示作者信息
+        this.typewriterEffect(this.fromEl, authorInfo);
+      });
+    } else {
+      // 直接显示内容
+      this.poemEl.textContent = content;
+      this.fromEl.textContent = authorInfo;
+    }
     
     this.showContent();
   }
@@ -89,14 +121,23 @@ class PoemApp {
     this.retryBtn.addEventListener('click', () => this.fetchPoem());
     this.historyToggle.addEventListener('click', () => this.toggleHistory());
     this.clearHistoryBtn.addEventListener('click', () => this.clearHistory());
+    this.settingsToggle.addEventListener('click', () => this.toggleSettings());
+    this.typewriterModeSelect.addEventListener('change', () => this.saveSettings());
+    this.authorAlignSelect.addEventListener('change', () => this.saveSettings());
     
-    // 点击外部关闭历史面板
+    // 点击外部关闭面板
     document.addEventListener('click', (e) => {
-      const isClickInsidePanel = this.historyPanel.contains(e.target);
-      const isClickOnToggle = this.historyToggle.contains(e.target);
+      const isClickInsideHistoryPanel = this.historyPanel.contains(e.target);
+      const isClickOnHistoryToggle = this.historyToggle.contains(e.target);
+      const isClickInsideSettingsPanel = this.settingsPanel.contains(e.target);
+      const isClickOnSettingsToggle = this.settingsToggle.contains(e.target);
       
-      if (!isClickInsidePanel && !isClickOnToggle) {
+      if (!isClickInsideHistoryPanel && !isClickOnHistoryToggle) {
         this.hideHistory();
+      }
+      
+      if (!isClickInsideSettingsPanel && !isClickOnSettingsToggle) {
+        this.hideSettings();
       }
     });
     
@@ -107,6 +148,8 @@ class PoemApp {
         this.fetchPoem();
       } else if (e.key === 'h' || e.key === 'H') {
         this.toggleHistory();
+      } else if (e.key === 's' || e.key === 'S') {
+        this.toggleSettings();
       }
     });
   }
@@ -205,21 +248,6 @@ class PoemApp {
     });
   }
   
-  displayHistoryPoem(data) {
-    this.hideLoading();
-    this.hideError();
-    
-    // 清空之前的内容
-    this.poemEl.innerHTML = '';
-    this.fromEl.innerHTML = '';
-    
-    // 直接显示历史诗词，不使用打字机效果
-    this.poemEl.textContent = data.content;
-    this.fromEl.textContent = `—— ${data.author}《${data.title}》`;
-    
-    this.showContent();
-  }
-  
   toggleHistory() {
     this.historyPanel.classList.toggle('hidden');
   }
@@ -234,6 +262,70 @@ class PoemApp {
       this.saveHistory();
       this.renderHistory();
     }
+  }
+  
+  // 设置功能
+  loadSettings() {
+    try {
+      const saved = localStorage.getItem('poetry-settings');
+      const defaultSettings = {
+        typewriterMode: 'always', // 'always', 'newOnly', 'never'
+        authorAlign: 'center' // 'left', 'center', 'right', 'hidden'
+      };
+      return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+    } catch (error) {
+      console.error('加载设置失败:', error);
+      return { typewriterMode: 'always', authorAlign: 'center' };
+    }
+  }
+  
+  saveSettings() {
+    try {
+      this.settings.typewriterMode = this.typewriterModeSelect.value;
+      this.settings.authorAlign = this.authorAlignSelect.value;
+      localStorage.setItem('poetry-settings', JSON.stringify(this.settings));
+      
+      // 立即应用作者信息样式
+      this.applyAuthorStyle();
+    } catch (error) {
+      console.error('保存设置失败:', error);
+    }
+  }
+  
+  initSettings() {
+    this.typewriterModeSelect.value = this.settings.typewriterMode;
+    this.authorAlignSelect.value = this.settings.authorAlign;
+    // 初始化时应用作者信息样式
+    this.applyAuthorStyle();
+  }
+  
+  applyAuthorStyle() {
+    // 清除所有对齐类
+    this.fromEl.classList.remove('align-left', 'align-center', 'align-right', 'hidden');
+    
+    // 根据设置应用相应的样式
+    switch (this.settings.authorAlign) {
+      case 'left':
+        this.fromEl.classList.add('align-left');
+        break;
+      case 'center':
+        this.fromEl.classList.add('align-center');
+        break;
+      case 'right':
+        this.fromEl.classList.add('align-right');
+        break;
+      case 'hidden':
+        this.fromEl.classList.add('hidden');
+        break;
+    }
+  }
+  
+  toggleSettings() {
+    this.settingsPanel.classList.toggle('hidden');
+  }
+  
+  hideSettings() {
+    this.settingsPanel.classList.add('hidden');
   }
 }
 

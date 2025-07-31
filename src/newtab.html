@@ -8,12 +8,6 @@
 </head>
 <body>
   <div id="container">
-    <button id="historyToggle" class="history-toggle" title="历史记录">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <polyline points="12,6 12,12 16,14"></polyline>
-      </svg>
-    </button>
     <div id="historyPanel" class="history-panel hidden">
       <div class="history-header">
         <span>最近诗词</span>
@@ -38,14 +32,56 @@
     </div>
   </div>
   
-  <!-- 固定在左下角的按钮 -->
-  <button id="refresh" class="refresh-btn" title="换一首">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="23 4 23 10 17 10"></polyline>
-      <polyline points="1 20 1 14 7 14"></polyline>
-      <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-    </svg>
-  </button>
+  <!-- 左下角按钮容器 -->
+  <div class="bottom-actions">
+    <button id="refresh" class="action-btn" title="换一首">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <polyline points="1 20 1 14 7 14"></polyline>
+        <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+      </svg>
+    </button>
+    
+    <button id="historyToggle" class="action-btn" title="历史记录">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12,6 12,12 16,14"></polyline>
+      </svg>
+    </button>
+    
+    <button id="settingsToggle" class="action-btn" title="设置">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"></path>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
+      </svg>
+    </button>
+  </div>
+  
+  <!-- 设置面板 -->
+  <div id="settingsPanel" class="settings-panel hidden">
+    <div class="settings-header">
+      <span>设置</span>
+    </div>
+    <div class="settings-content">
+      <div class="setting-item">
+        <label for="typewriterMode">打字机效果</label>
+        <select id="typewriterMode" class="setting-select">
+          <option value="always">开启</option>
+          <option value="newOnly">仅最新诗词使用</option>
+          <option value="never">关闭</option>
+        </select>
+      </div>
+      <div class="setting-item">
+        <label for="authorAlign">作者信息</label>
+        <select id="authorAlign" class="setting-select">
+          <option value="center">居中</option>
+          <option value="left">左对齐</option>
+          <option value="right">右对齐</option>
+          <option value="hidden">隐藏</option>
+        </select>
+      </div>
+    </div>
+  </div>
   
   <script src="newtab.js"></script>
 </body>
